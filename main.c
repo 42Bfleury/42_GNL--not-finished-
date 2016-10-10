@@ -6,7 +6,7 @@
 /*   By: bfleury <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/05 00:13:30 by bfleury           #+#    #+#             */
-/*   Updated: 2016/10/05 09:46:32 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/10/10 03:15:11 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,17 @@
 
 int		main(void)
 {
+	int		i;
 	int		fd;
 	char	*line;
 
-	line = ft_strnew(0);
-	fd = open("test", O_RDONLY);
-	if (fd < 0)
+	line	= NULL;
+	fd		= open("test", O_RDONLY);
+	while ((i = get_next_line(fd, &line)) > 0)
 	{
-		printf("Error.\n");
-		return (1);
+		printf("%i: %s\n", i, line);
+		ft_strdel(&line);
 	}
-	while (get_next_line(fd, &line) > 0)
-		printf("%s\n\n", line);
-	printf("\n");
+	printf("END\n%d\n", i);
 	return (0);
 }
