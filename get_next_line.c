@@ -6,7 +6,7 @@
 /*   By: bfleury <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/04 21:58:52 by bfleury           #+#    #+#             */
-/*   Updated: 2016/10/20 16:33:32 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/10/20 19:34:37 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void		del_elem(t_gnl **elem)
 	if ((*elem)->next)
 		(*elem)->next->prev = (*elem)->prev;
 	free(*elem);
+	*elem = NULL;
 }
 
 t_gnl		*check_lst(t_gnl **first, int fd)
@@ -64,8 +65,9 @@ int			check_buffer_data(char **buffer, t_gnl **elem, char **line)
 			tmp = ft_strdup(*buffer);
 		ft_strdel(&(*elem)->data);
 		(*elem)->data = tmp;
+		ft_bzero(*buffer, BUFF_SIZE);
 	}
-	ft_strdel(buffer);
+	ft_bzero(*buffer, BUFF_SIZE);
 	if ((*elem)->data && (tmp = ft_strchr((*elem)->data, '\n')))
 	{
 		*tmp = '\0';
@@ -73,8 +75,7 @@ int			check_buffer_data(char **buffer, t_gnl **elem, char **line)
 		tmp = (*(tmp + 1)) ? ft_strdup(tmp + 1) : NULL;
 		ft_strdel(&(*elem)->data);
 		(*elem)->data = tmp;
-		if (!(*elem)->data)
-			del_elem(elem);
+		ft_strdel(buffer);
 		return (1);
 	}
 	return (0);
@@ -88,9 +89,9 @@ int			get_next_line(const int fd, char **line)
 	int				nb_char;
 
 	first = (first) ? first : new_elem(fd);
-	buffer = ft_strnew(BUFF_SIZE);
-	if (!first || !line || fd < 0)
+	if (fd < 0 || !line || !first)
 		return (-1);
+	buffer = ft_strnew(BUFF_SIZE);
 	elem = check_lst(&first, fd);
 	while ((nb_char = read(fd, buffer, BUFF_SIZE)) || elem->data)
 	{
