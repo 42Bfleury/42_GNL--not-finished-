@@ -6,7 +6,7 @@
 /*   By: bfleury <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/04 21:58:52 by bfleury           #+#    #+#             */
-/*   Updated: 2016/10/19 12:00:14 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/10/21 17:23:05 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int			get_next_line(const int fd, char **line)
 	char			*buffer;
 	t_gnl			*content;
 	t_list			*prev;
-	static t_list	*first = NULL;
+	t_list	*first = NULL;
 
 	buffer = ft_strnew(BUFF_SIZE);
 	if (fd < 0 || buffer == NULL)
@@ -227,4 +227,4 @@ int		get_next_line(const int fd, char **line)
 		ft_bzero(tmp, BUFF_SIZE + 1);
 	}
 	return (gnl_split(lst, lst->i, line, tmp));
-} 
+}
