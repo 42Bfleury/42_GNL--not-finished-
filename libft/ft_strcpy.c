@@ -6,7 +6,7 @@
 /*   By: bfleury <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/04 08:48:06 by bfleury           #+#    #+#             */
-/*   Updated: 2015/12/18 02:19:11 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/10/24 04:45:42 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,17 @@
 
 char	*ft_strcpy(char *dst, const char *src)
 {
-	return (ft_strncpy(dst, src, (ft_strlen(src) + 1)));
+	int		i;
+
+	i = 0;
+	if (*src)
+	{
+		while (src[i] != '\0')
+		{
+			dst[i] = src[i];
+			i++;
+		}
+		dst[i] = '\0';
+	}
+	return (dst);
 }

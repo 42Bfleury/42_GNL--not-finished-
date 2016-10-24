@@ -5,97 +5,102 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bfleury <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/10/04 21:58:52 by bfleury           #+#    #+#             */
-/*   Updated: 2016/10/22 11:47:34 by bfleury          ###   ########.fr       */
+/*   Created: 2016/10/24 00:46:39 by bfleury           #+#    #+#             */
+/*   Updated: 2016/10/24 05:11:43 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_gnl	*new_elem(int fd)
+t_gnl		*new_elem(int fd)
 {
-	t_gnl	*elem;
+	t_gnl	*e;
 
-	if (!(elem = (t_gnl*)ft_memalloc(sizeof(t_gnl))))
+	if (!(e = (t_gnl*)ft_memalloc(sizeof(t_gnl))))
 		return (NULL);
-	elem->fd = fd;
-	return (elem);
+	e->fd = fd;
+	e->prev = NULL;
+	e->next = NULL;
+	if (!(e->data = ft_strnew(BUFF_SIZE)))
+		return (NULL);
+	return (e);
 }
 
-t_gnl	*check_lst(t_gnl *list, int fd)
+t_gnl		*check_lst(t_gnl *f, int fd)
 {
-	t_gnl	*elem;
-	t_gnl	*last;
+	t_gnl	*e;
+	t_gnl	*l;
 
-	elem = list;
-	while (elem)
+	e = f;
+	while (e)
 	{
-		if (elem->fd == fd)
-			return (elem);
-		last = elem;
-		elem = elem->next;
+		if ((l = e) && e->fd == fd)
+			return (e);
+		e = e->next;
 	}
-	last->next = new_elem(fd);
-	last->next->prev = last;
-	return (last->next);
+	l->next = new_elem(fd);
+	l->next->prev = l;
+	return (l->next);
 }
 
-int		del_elem(t_gnl *elem, char **line)
-{
-	if (elem->data && *elem->data)
-	{
-		*line = ft_strdup(elem->data);
-		ft_strdel(&elem->data);
-		return (1);
-	}
-	if (elem->prev)
-		elem->prev->next = elem->next;
-	if (elem->next)
-		elem->next->prev = elem->prev;
-	free(elem);
-	return (0);
-}
-
-int		check_buffer(char *buffer, t_gnl *elem, char **line)
+int			check_buffer(char *b, t_gnl *e, char **l)
 {
 	char	*tmp;
 
-	if (buffer)
+	if (e->data && ((b && (tmp = ft_strchr(b, '\n')))
+		|| (tmp = ft_strchr(e->data, '\n'))))
 	{
-		tmp = (elem->data) ? ft_strjoin(elem->data, buffer) : ft_strdup(buffer);
-		ft_strdel(&elem->data);
-		elem->data = tmp;
-	}
-	ft_bzero(buffer, BUFF_SIZE);
-	if (elem->data && (tmp = ft_strchr(elem->data, '\n')))
-	{
-		*(tmp++) = 0;
-		*line = ft_strdup(elem->data);
-		ft_memmove(elem->data, tmp, ft_strlen(tmp) + 1);
+		*tmp = 0;
+		*l = (b) ? ft_strjoin(e->data, b) : ft_strdup(e->data);
+		tmp = ft_strdup(tmp + 1);
+		free(e->data);
+		e->data = tmp;
 		return (1);
+	}
+	if (b)
+	{
+		tmp = e->data;
+		e->data = ft_strjoin(e->data, b);
+		free(tmp);
+		ft_bzero(b, BUFF_SIZE);
 	}
 	return (0);
 }
 
-int		get_next_line(const int fd, char **line)
+int			del_elem(t_gnl *e, char **l)
 {
-	static t_gnl	*list = NULL;
-	t_gnl			*elem;
-	int				nb_char;
-	char			buffer[BUFF_SIZE + 1];
-
-	if (fd < 0 || !line || !(list = (list) ? list : new_elem(fd)))
-		return (-1);
-	elem = check_lst(list, fd);
-	ft_bzero(buffer, BUFF_SIZE + 1);
-	while ((nb_char = read(fd, buffer, BUFF_SIZE)) || elem->data)
+	if (e->data && *e->data)
 	{
-		if (nb_char < 0)
-			return (-1);
-		if (check_buffer(buffer, elem, line))
-			return (1);
-		if (!nb_char)
-			return (del_elem(elem, line));
+		*l = ft_strdup(e->data);
+		ft_strdel(&e->data);
+		return (1);
 	}
+	if (e->prev)
+		e->prev->next = e->next;
+	if (e->next)
+		e->next->prev = e->prev;
 	return (0);
+}
+
+int			get_next_line(const int fd, char **line)
+{
+	static t_gnl	*f = NULL;
+	t_gnl			*e;
+	int				nb;
+	char			b[BUFF_SIZE + 1];
+
+	if (fd < 0 || !line || !(f = (f) ? f : new_elem(fd)))
+		return (-1);
+	e = check_lst(f, fd);
+	if (check_buffer(NULL, e, line))
+		return (1);
+	ft_bzero(b, BUFF_SIZE + 1);
+	while ((nb = read(fd, b, BUFF_SIZE)))
+	{
+		if (nb < 0)
+			return (-1);
+		if (check_buffer(b, e, line))
+			return (1);
+	}
+	return (del_elem(e, line));
 }
