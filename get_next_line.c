@@ -6,7 +6,7 @@
 /*   By: bfleury <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/24 00:46:39 by bfleury           #+#    #+#             */
-/*   Updated: 2016/10/24 05:11:43 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/10/25 01:13:04 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_gnl		*new_elem(int fd)
 	e->fd = fd;
 	e->prev = NULL;
 	e->next = NULL;
-	if (!(e->data = ft_strnew(BUFF_SIZE)))
+	if (!(e->data = ft_strnew(0)))
 		return (NULL);
 	return (e);
 }
@@ -79,6 +79,7 @@ int			del_elem(t_gnl *e, char **l)
 		e->prev->next = e->next;
 	if (e->next)
 		e->next->prev = e->prev;
+	free(e);
 	return (0);
 }
 
