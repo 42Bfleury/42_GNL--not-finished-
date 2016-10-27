@@ -6,7 +6,7 @@
 /*   By: bfleury <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/04 21:59:20 by bfleury           #+#    #+#             */
-/*   Updated: 2016/10/25 01:25:59 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/10/27 18:26:00 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 # define BUFF_SIZE 1
 
-# include "libft/libft.h"
+# include "../Libft/includes/libft.h"
 
 typedef struct		s_gnl
 {

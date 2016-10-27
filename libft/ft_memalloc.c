@@ -6,7 +6,7 @@
 /*   By: bfleury <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/27 10:08:42 by bfleury           #+#    #+#             */
-/*   Updated: 2016/10/24 01:58:11 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/10/27 19:30:43 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	*ft_memalloc(size_t size)
 {
-	void *ptr;
+	void	*ptr;
 
-	if (!(ptr = (void *)malloc(size)))
+	if (!(ptr = (void*)malloc(size)))
 		return (NULL);
 	ft_bzero(ptr, size);
 	return (ptr);
