@@ -6,21 +6,21 @@
 /*   By: bfleury <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/07 02:31:26 by bfleury           #+#    #+#             */
-/*   Updated: 2015/12/17 05:06:27 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/10/28 04:03:54 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "includes/libft.h"
 
 size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
 	char		*ptrdst;
-	const char	*ptrsrc;
+	char		*ptrsrc;
 	size_t		n;
 	size_t		dstlen;
 
 	ptrdst = dst;
-	ptrsrc = src;
+	ptrsrc = (char*)src;
 	n = size;
 	while (*ptrdst && n--)
 		ptrdst++;

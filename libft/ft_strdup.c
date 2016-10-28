@@ -6,28 +6,18 @@
 /*   By: bfleury <benjamin.fleury@hotmail.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/05 23:11:15 by bfleury           #+#    #+#             */
-/*   Updated: 2016/10/24 02:00:32 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/10/27 19:58:54 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "includes/libft.h"
 
-char	*ft_strdup(const char *s1)
+char	*ft_strdup(const char *s)
 {
 	char	*str;
-	int		i;
 
-	i = 0;
-	str = ft_strnew(sizeof(char) * (ft_strlen(s1) + 1));
-	if (str == NULL)
+	if (!(str = ft_strnew(ft_strlen(s))))
 		return (NULL);
-	while (s1[i] != '\0')
-	{
-		str[i] = s1[i];
-		i++;
-	}
-	str[++i] = '\0';
-	if (str == NULL)
-		return (NULL);
+	ft_strcpy(str, s);
 	return (str);
 }

@@ -6,19 +6,22 @@
 /*   By: bfleury <benjamin.fleury@hotmail.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/05 17:53:18 by bfleury           #+#    #+#             */
-/*   Updated: 2015/12/17 05:19:31 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/10/28 09:52:58 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "includes/libft.h"
 
 char	*ft_strrchr(const char *s, int c)
 {
-	char *ptr;
+	unsigned char	*ptr;
 
-	ptr = (char *)s + ft_strlen(s);
-	while (ptr >= s)
-		if (*ptr-- == c)
-			return (++ptr);
+	ptr = (unsigned char*)s + ft_strlen(s);
+	while (ptr >= (unsigned char*)s)
+	{
+		if (*ptr == c)
+			return ((char*)ptr);
+		ptr--;
+	}
 	return (NULL);
 }

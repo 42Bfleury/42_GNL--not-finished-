@@ -6,13 +6,15 @@
 /*   By: bfleury <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/14 06:58:18 by bfleury           #+#    #+#             */
-/*   Updated: 2015/12/14 06:59:13 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/10/27 17:57:41 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "includes/libft.h"
 
 int		ft_abs(int n)
 {
-	return ((n >= 0) ? n : -n);
+	if (n < 0)
+		return (-n);
+	return (n);
 }

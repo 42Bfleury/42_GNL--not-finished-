@@ -6,21 +6,24 @@
 /*   By: bfleury <benjamin.fleury@hotmail.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/05 17:40:41 by bfleury           #+#    #+#             */
-/*   Updated: 2016/10/24 04:43:21 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/10/28 10:09:53 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "includes/libft.h"
 
-char	*ft_strchr(const char *str, int c)
+char	*ft_strchr(const char *s, int c)
 {
-	while ((char)*str)
+	char	*str;
+
+	str = (char*)s;
+	while (*str)
 	{
-		if ((char)*str == (char)c)
-			return ((char *)str);
+		if (*str == c)
+			return (str);
 		str++;
 	}
-	if ((char)*str == (char)c)
-		return ((char *)str);
+	if (*str == c)
+		return (str);
 	return (NULL);
 }

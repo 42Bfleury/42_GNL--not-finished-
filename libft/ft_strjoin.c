@@ -6,22 +6,19 @@
 /*   By: bfleury <benjamin.fleury@hotmail.fr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/06 00:39:41 by bfleury           #+#    #+#             */
-/*   Updated: 2016/10/24 02:00:01 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/10/28 11:45:14 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "includes/libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(const char *s1, const char *s2)
 {
-	char	*ptr;
+	char	*result;
 
-	if (s1 == NULL || s2 == NULL)
+	if (!s1 || !s2 || !(result = ft_strnew(ft_strlen(s1) + ft_strlen(s2))))
 		return (NULL);
-	ptr = ft_memalloc(ft_strlen(s1) + ft_strlen(s2) + sizeof(char));
-	if (ptr == NULL)
-		return (NULL);
-	ft_strcpy(ptr, s1);
-	ft_strcat(ptr, s2);
-	return (ptr);
+	ft_strcpy(result, s1);
+	ft_strcat(result, s2);
+	return (result);
 }

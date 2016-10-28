@@ -6,25 +6,14 @@
 /*   By: bfleury <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/04 08:48:06 by bfleury           #+#    #+#             */
-/*   Updated: 2016/10/24 04:45:42 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/10/27 20:29:59 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "includes/libft.h"
 
 char	*ft_strcpy(char *dst, const char *src)
 {
-	int		i;
-
-	i = 0;
-	if (*src)
-	{
-		while (src[i] != '\0')
-		{
-			dst[i] = src[i];
-			i++;
-		}
-		dst[i] = '\0';
-	}
+	ft_strncpy(dst, src, (ft_strlen(src) + 1));
 	return (dst);
 }

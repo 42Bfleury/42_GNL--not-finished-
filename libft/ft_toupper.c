@@ -6,13 +6,15 @@
 /*   By: bfleury <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/27 02:42:31 by bfleury           #+#    #+#             */
-/*   Updated: 2015/12/07 03:12:48 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/10/28 04:11:43 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "includes/libft.h"
 
 int		ft_toupper(int c)
 {
-	return (ft_islower(c) ? (c - 'a' + 'A') : c);
+	if (c >= 'a' && c <= 'z')
+		return (c - 'a' + 'A');
+	return (c);
 }
