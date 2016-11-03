@@ -6,13 +6,13 @@
 /*   By: bfleury <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/04 21:59:20 by bfleury           #+#    #+#             */
-/*   Updated: 2016/10/27 18:26:00 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/11/03 11:08:52 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# define BUFF_SIZE 1
+# define BUFF_SIZE 512
 
 # include "../Libft/includes/libft.h"
 

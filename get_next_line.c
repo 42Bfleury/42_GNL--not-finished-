@@ -6,13 +6,13 @@
 /*   By: bfleury <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/24 00:46:39 by bfleury           #+#    #+#             */
-/*   Updated: 2016/10/25 01:13:04 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/11/03 01:35:58 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_gnl		*new_elem(int fd)
+static t_gnl	*new_elem(int fd)
 {
 	t_gnl	*e;
 
@@ -26,7 +26,7 @@ t_gnl		*new_elem(int fd)
 	return (e);
 }
 
-t_gnl		*check_lst(t_gnl *f, int fd)
+static t_gnl	*check_lst(t_gnl *f, int fd)
 {
 	t_gnl	*e;
 	t_gnl	*l;
@@ -43,7 +43,7 @@ t_gnl		*check_lst(t_gnl *f, int fd)
 	return (l->next);
 }
 
-int			check_buffer(char *b, t_gnl *e, char **l)
+static int		check_buffer(char *b, t_gnl *e, char **l)
 {
 	char	*tmp;
 
@@ -67,7 +67,7 @@ int			check_buffer(char *b, t_gnl *e, char **l)
 	return (0);
 }
 
-int			del_elem(t_gnl *e, char **l)
+static int		del_elem(t_gnl *e, char **l)
 {
 	if (e->data && *e->data)
 	{
@@ -83,7 +83,7 @@ int			del_elem(t_gnl *e, char **l)
 	return (0);
 }
 
-int			get_next_line(const int fd, char **line)
+int				get_next_line(const int fd, char **line)
 {
 	static t_gnl	*f = NULL;
 	t_gnl			*e;
