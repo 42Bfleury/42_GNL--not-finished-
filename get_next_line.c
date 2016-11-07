@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bfleury <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: bfleury <bfleury@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/24 00:46:39 by bfleury           #+#    #+#             */
-/*   Updated: 2016/11/03 01:35:58 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/11/07 06:19:29 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ static int		del_elem(t_gnl *e, char **l)
 		e->prev->next = e->next;
 	if (e->next)
 		e->next->prev = e->prev;
-	free(e);
 	return (0);
 }
 
