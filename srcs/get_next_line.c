@@ -6,11 +6,11 @@
 /*   By: bfleury <bfleury@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/24 00:46:39 by bfleury           #+#    #+#             */
-/*   Updated: 2016/11/07 06:19:29 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/11/11 16:32:47 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../includes/get_next_line.h"
 
 static t_gnl	*new_elem(int fd)
 {
@@ -62,7 +62,7 @@ static int		check_buffer(char *b, t_gnl *e, char **l)
 		tmp = e->data;
 		e->data = ft_strjoin(e->data, b);
 		free(tmp);
-		ft_bzero(b, BUFF_SIZE);
+		ft_bzero(b, GNL_BUFF_SIZE);
 	}
 	return (0);
 }
@@ -87,15 +87,15 @@ int				get_next_line(const int fd, char **line)
 	static t_gnl	*f = NULL;
 	t_gnl			*e;
 	int				nb;
-	char			b[BUFF_SIZE + 1];
+	char			b[GNL_BUFF_SIZE + 1];
 
 	if (fd < 0 || !line || !(f = (f) ? f : new_elem(fd)))
 		return (-1);
 	e = check_lst(f, fd);
 	if (check_buffer(NULL, e, line))
 		return (1);
-	ft_bzero(b, BUFF_SIZE + 1);
-	while ((nb = read(fd, b, BUFF_SIZE)))
+	ft_bzero(b, GNL_BUFF_SIZE + 1);
+	while ((nb = read(fd, b, GNL_BUFF_SIZE)))
 	{
 		if (nb < 0)
 			return (-1);
