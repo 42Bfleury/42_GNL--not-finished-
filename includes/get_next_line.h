@@ -6,7 +6,7 @@
 /*   By: bfleury <bfleury@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/04 21:59:20 by bfleury           #+#    #+#             */
-/*   Updated: 2016/11/11 16:27:52 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/11/12 16:18:29 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,7 @@ typedef struct				s_gnl
 	struct s_gnl			*prev;
 	struct s_gnl			*next;
 }							t_gnl;
+
+int							get_next_line(const int fd, char **line);
 
 #endif
