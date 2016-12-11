@@ -6,11 +6,11 @@
 /*   By: bfleury <bfleury@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/24 00:46:39 by bfleury           #+#    #+#             */
-/*   Updated: 2016/11/11 16:32:47 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/12/11 02:16:38 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/get_next_line.h"
+#include "get_next_line.h"
 
 static t_gnl	*new_elem(int fd)
 {

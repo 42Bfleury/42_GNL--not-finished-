@@ -6,7 +6,7 @@
 /*   By: bfleury <bfleury@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/04 21:59:20 by bfleury           #+#    #+#             */
-/*   Updated: 2016/11/12 16:18:29 by bfleury          ###   ########.fr       */
+/*   Updated: 2016/12/11 02:16:35 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define GET_NEXT_LINE_H
 # define GNL_BUFF_SIZE		512
 
-# include "libft.h"
+# include "../Libft/includes/libft.h"
 
 typedef struct				s_gnl
 {
