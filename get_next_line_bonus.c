@@ -1,94 +1,67 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line copy.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bfleury <bfleury@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 17:54:55 by bfleury           #+#    #+#             */
-/*   Updated: 2024/03/07 19:14:00 by bfleury          ###   ########.fr       */
+/*   Updated: 2024/03/03 03:43:07 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*get_line(char *buffer, char **result)
+static t_gnl	*new_element(int fd)
 {
-	int		lenght;
-	char	*tmp1;
-	char	*tmp2;
-	char	*offset;
+	t_gnl	*element;
 
-	tmp1 = NULL;
-	if (buffer[0])
+	if (fd < 0)
+		return (NULL);
+	element = malloc(sizeof(*element));
+	if (!element)
+		return (NULL);
+	element->fd = fd;
+	element->line = "";
+	element->next = NULL;
+	return (element);
+}
+
+static t_gnl	*get_element(t_gnl *lst, int fd)
+{
+	t_gnl	*last;
+
+	if (!lst || fd < 0)
+		return (NULL);
+	while (lst)
 	{
-		offset = ft_strchr(buffer, '\n');
-		if (offset)
-		{
-			if (*result[0])
-				tmp1 = *result;
-			lenght = offset - buffer + 1;
-			tmp2 = ft_substr(buffer, 0, lenght);
-			*result = ft_strjoin(*result, tmp2);
-			if (tmp1)
-			{
-				free(tmp1);
-				tmp1 = NULL;
-			}
-			if (tmp2)
-			{
-				free(tmp2);
-				tmp2 = NULL;
-			}
-			lenght = BUFFER_SIZE - lenght + 1;
-			ft_memcpy(buffer, &offset[1], lenght);
-			ft_bzero(&buffer[lenght - 1], BUFFER_SIZE - lenght);
-			return (*result);
-		}
-		else
-		{
-			if (*result[0])
-				tmp1 = *result;
-			*result = ft_strjoin(*result, buffer);
-			ft_bzero(buffer, BUFFER_SIZE);
-			if (tmp1)
-			{
-				free(tmp1);
-				tmp1 = NULL;
-			}
-		}
+		last = lst;
+		if (lst->fd == fd)
+			return (lst);
+		lst = lst->next;
 	}
-	else if (!buffer[0] && *result[0])
-		return (*result);
-	return (NULL);
+	last->next = new_element(fd);
+	return (last->next);
+}
+
+static char	*get_line(t_gnl *element)
+{
+	return ("");
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer = NULL;
-	char		*result;
-	int			nb_read;
+	static t_gnl	*lst = NULL;
+	t_gnl			*element;
+	char			*result;
 
 	if (fd < 0)
 		return (NULL);
-	if (!buffer)
-	{
-		buffer = malloc(sizeof(*buffer) * BUFFER_SIZE + 1);
-		ft_bzero(buffer, BUFFER_SIZE + 1);
-	}
-	result = "";
-	if (get_line(buffer, &result))
-		return (result);
-	nb_read = 1;
-	while (nb_read)
-	{
-		nb_read = read(fd, buffer, BUFFER_SIZE);
-		if (nb_read < 0)
-			return (NULL);
-		if (get_line(buffer, &result))
-			return (result);
-
-	}
+	if (!lst)
+		lst = new_elem(fd);
+	element = get_element(lst, fd);
+	result = get_line(element);
+	return (result);
 }
 
 	/*char			buffer[BUFFER_SIZE];
