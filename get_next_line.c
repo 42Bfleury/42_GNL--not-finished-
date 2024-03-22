@@ -5,117 +5,118 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bfleury <bfleury@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/02 17:54:55 by bfleury           #+#    #+#             */
-/*   Updated: 2024/03/07 19:14:00 by bfleury          ###   ########.fr       */
+/*   Created: 2016/10/24 00:46:39 by bfleury           #+#    #+#             */
+/*   Updated: 2024/03/22 03:06:10 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*get_line(char *buffer, char **result)
+static t_gnl	*new_elem(int fd)
 {
-	int		lenght;
-	char	*tmp1;
-	char	*tmp2;
-	char	*offset;
+	t_gnl	*elem;
 
-	tmp1 = NULL;
-	if (buffer[0])
+	elem = malloc(sizeof(*elem));
+	if (!elem)
+		return (NULL);
+	elem->fd = fd;
+	elem->prev = NULL;
+	elem->next = NULL;
+	elem->data = NULL;
+	return (elem);
+}
+
+static t_gnl	*check_list(t_gnl *list, int fd)
+{
+	t_gnl	*prev;
+
+	if (!list)
+		return (NULL);
+	while (list)
 	{
-		offset = ft_strchr(buffer, '\n');
-		if (offset)
-		{
-			if (*result[0])
-				tmp1 = *result;
-			lenght = offset - buffer + 1;
-			tmp2 = ft_substr(buffer, 0, lenght);
-			*result = ft_strjoin(*result, tmp2);
-			if (tmp1)
-			{
-				free(tmp1);
-				tmp1 = NULL;
-			}
-			if (tmp2)
-			{
-				free(tmp2);
-				tmp2 = NULL;
-			}
-			lenght = BUFFER_SIZE - lenght + 1;
-			ft_memcpy(buffer, &offset[1], lenght);
-			ft_bzero(&buffer[lenght - 1], BUFFER_SIZE - lenght);
-			return (*result);
-		}
-		else
-		{
-			if (*result[0])
-				tmp1 = *result;
-			*result = ft_strjoin(*result, buffer);
-			ft_bzero(buffer, BUFFER_SIZE);
-			if (tmp1)
-			{
-				free(tmp1);
-				tmp1 = NULL;
-			}
-		}
+		if (list->fd == fd)
+			return (list);
+		prev = list;
+		list = list->next;
 	}
-	else if (!buffer[0] && *result[0])
-		return (*result);
+	list = prev;
+	list->next = new_elem(fd);
+	list->next->prev = list;
+	return (list->next);
+}
+
+static char	*get_line(char *buffer, t_gnl *elem, char **line)
+{
+	char	*tmp;
+
+	if (buffer)
+		tmp = ft_strchr(buffer, '\n');
+	else if (elem->data)
+		tmp = ft_strchr(elem->data, '\n');
+	if (elem->data && tmp)
+	{
+		*tmp = 0;
+		*line = ft_strjoin(elem->data, buffer);
+		tmp = ft_strjoin(tmp + 1, "");
+		if (elem->data)
+			free(elem->data);
+		elem->data = tmp;
+		return (*line);
+	}
+	if (buffer)
+	{
+		tmp = elem->data;
+		elem->data = ft_strjoin(elem->data, buffer);
+		if (tmp)
+			free(tmp);
+		ft_bzero(buffer, BUFFER_SIZE);
+	}
+	return (NULL);
+}
+
+static char	*del_elem(t_gnl *elem, char **line)
+{
+	if (elem->data && *elem->data)
+	{
+		*line = ft_strjoin(elem->data, "");
+		if (elem->data)
+			free(elem->data);
+		return (*line);
+	}
+	if (elem->prev)
+		elem->prev->next = elem->next;
+	if (elem->next)
+		elem->next->prev = elem->prev;
+	if (elem)
+		free(elem);
 	return (NULL);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer = NULL;
-	char		*result;
-	int			nb_read;
+	static t_gnl	*list = NULL;
+	t_gnl			*elem;
+	int				nb_read;
+	char			*line;
+	char			*buffer;
 
-	if (fd < 0)
+	if (!list && fd >= 0)
+		list = new_elem(fd);
+	elem = check_list(list, fd);
+	buffer = malloc(sizeof(BUFFER_SIZE + 1));
+	line = NULL;
+	if (fd < 0 || BUFFER_SIZE < 1 || !list || !elem || read(fd, buffer, 0) < 0)
 		return (NULL);
-	if (!buffer)
-	{
-		buffer = malloc(sizeof(*buffer) * BUFFER_SIZE + 1);
-		ft_bzero(buffer, BUFFER_SIZE + 1);
-	}
-	result = "";
-	if (get_line(buffer, &result))
-		return (result);
-	nb_read = 1;
+	if (get_line(NULL, elem, &line))
+		return (line);
+	nb_read = ft_bzero(buffer, BUFFER_SIZE + 1);
 	while (nb_read)
 	{
 		nb_read = read(fd, buffer, BUFFER_SIZE);
 		if (nb_read < 0)
 			return (NULL);
-		if (get_line(buffer, &result))
-			return (result);
-
+		if (get_line(buffer, elem, &line))
+			return (line);
 	}
+	return (del_elem(elem, &line));
 }
-
-	/*char			buffer[BUFFER_SIZE];
-	int				nb_read;
-
-	result = malloc((sizeof(*result) * BUFFER_SIZE) + 2);
-	if (!result || fd < 0)
-	{
-		if (result)
-			free(result);
-		if (DEBBUG)
-			printf("%s {get_next_line} - malloc(result) failed...\n", RERROR);
-		return (NULL);
-	}
-	nb_read = read(fd, result, BUFFER_SIZE);
-	if (nb_read <= 0 || fd < 0)
-	{
-		if (result)
-			free(result);
-		if (!nb_read && DEBBUG)
-			printf("%s Nothing to read from [fd: %i]\n", YINFO, fd);
-		else if (DEBBUG)
-			printf("%s Failed to read from [fd: %i]...\n", RERROR, fd);
-		return (NULL);
-	}
-	else if (DEBBUG)
-		printf("%s Read %i char from [fd: %i]\n", GINFO, nb_read, fd);
-	result[nb_read] = '\n';
-	result[nb_read + 1] = 0;
-	return (result);*/

@@ -6,13 +6,13 @@
 /*   By: bfleury <bfleury@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 18:17:05 by bfleury           #+#    #+#             */
-/*   Updated: 2024/03/07 19:11:28 by bfleury          ###   ########.fr       */
+/*   Updated: 2024/03/22 02:56:31 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	ft_bzero(void *s, size_t n)
+int	ft_bzero(void *s, size_t n)
 {
 	char	*tmp;
 
@@ -22,6 +22,7 @@ void	ft_bzero(void *s, size_t n)
 		tmp[n - 1] = 0;
 		n--;
 	}
+	return (1);
 }
 
 char	*ft_strchr(const char *s, int c)
@@ -61,15 +62,15 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(const char *str, unsigned int start, size_t len)
 {
 	size_t	lenght;
 	char	*result;
 
-	if (!s)
+	if (!str)
 		return (NULL);
 	lenght = 0;
-	while (s[lenght])
+	while (str[lenght])
 		lenght++;
 	if (start > lenght)
 		len = 0;
@@ -78,7 +79,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	result = malloc(sizeof(*result) * len + 1);
 	if (!result)
 		return (NULL);
-	ft_memcpy(result, &s[start], len);
+	ft_memcpy(result, &str[start], len);
 	result[len] = 0;
 	return (result);
 }

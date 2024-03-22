@@ -1,3 +1,0 @@
-Test1.txt: line 1
-Test1.txt: line 2
-Test1.txt: line 3
