@@ -5,20 +5,20 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bfleury <bfleury@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/23 04:56:48 by gmarquis          #+#    #+#             */
-/*   Updated: 2024/04/21 21:38:38 by bfleury          ###   ########.fr       */
+/*   Created: 2024/03/05 09:07:26 by bfleury           #+#    #+#             */
+/*   Updated: 2024/04/21 21:37:09 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*get_line(char **str)
+char	*_get_line(char **str)
 {
 	int		i;
 	char	*tmp;
 	char	*line;
 
-	if (!*tmp)
+	if (!*str)
 		return (NULL);
 	tmp = *str;
 	i = 0;
@@ -40,10 +40,10 @@ char	*get_next_line(int fd)
 	char			*buffer;
 	int				nb_read;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, buffer, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (free(tmp), tmp = NULL, NULL);
 	if (ft_strchr(tmp, '\n'))
-		return (get_line(&tmp));
+		return (_get_line(&tmp));
 	buffer = malloc(sizeof(*buffer) * (BUFFER_SIZE + 1));
 	if (!buffer)
 		return (NULL);
@@ -59,7 +59,7 @@ char	*get_next_line(int fd)
 	if (buffer)
 		free(buffer);
 	buffer = NULL;
-	return (get_line(&tmp));
+	return (_get_line(&tmp));
 }
 
 /*char	*get_next_line(int fd)
