@@ -12,17 +12,26 @@
 
 #include "get_next_line_bonus.h"
 
-int	contain_n(char *str, char n)
+char	*print_line(char **tempo)
 {
-	int	i;
+	int		i;
+	char	*line;
+	char	*str;
 
-	if (!str)
-		return (0);
-	i = -1;
-	while (str[++i])
-		if (str[i] == n)
-			return (1);
-	return (0);
+	if (!*tempo)
+		return (NULL);
+	str = *tempo;
+	i = 0;
+	while (str[i] && str[i] != 10)
+		i++;
+	if (str[i] == 10)
+		i++;
+	line = ft_strdup(str, i);
+	*tempo = ft_strdup(str + i, ft_strlen(str + i));
+	if (str)
+		free(str);
+	str = NULL;
+	return (line);
 }
 
 char	*get_next_line(int fd)
@@ -33,7 +42,7 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (free(tempo[fd]), tempo[fd] = NULL, NULL);
-	if (contain_n(tempo[fd], '\n'))
+	if (ft_strchr(tempo[fd], '\n'))
 		return (print_line(&tempo[fd]));
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
@@ -44,7 +53,7 @@ char	*get_next_line(int fd)
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		buffer[bytes_read] = 0;
 		tempo[fd] = ft_strjoin(tempo[fd], buffer);
-		if (contain_n(tempo[fd], '\n'))
+		if (ft_strchr(tempo[fd], '\n'))
 			break ;
 	}
 	if (buffer)

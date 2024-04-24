@@ -24,66 +24,65 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-char	*ft_strdup(char *s, int len)
+char	*ft_strchr(char *str, char c)
 {
-	char	*str;
-	int		count;
-
-	if (!s || !len)
+	if (!str)
 		return (NULL);
-	count = 0;
-	str = malloc(len + 1);
-	while (count < len)
+	c %= 256;
+	while (*str)
 	{
-		str[count] = s[count];
-		count++;
+		if (*str == c)
+			return (str);
+		str++;
 	}
-	str[count] = '\0';
-	return (str);
+	if (*str == c)
+		return (str);
+	return (NULL);
 }
 
-void	*ft_memcpy(void *dest, const void *src, size_t n)
+char	*ft_strdup(char *str, int len)
 {
-	char	*ptrdest;
-	char	*ptrsrc;
-
-	if (n && dest != src)
-	{
-		ptrdest = (char *)dest;
-		ptrsrc = (char *)src;
-		while (n)
-		{
-			*ptrdest = *ptrsrc;
-			ptrdest++;
-			ptrsrc++;
-			n--;
-		}
-	}
-	return (dest);
-}
-
-char	*ft_strjoin(const char *s1, const char *s2)
-{
-	int		len1;
-	int		len2;
+	int		i;
 	char	*result;
 
-	len1 = 0;
-	while (s1 && s1[len1])
-		len1++;
-	len2 = 0;
-	while (s2 && s2[len2])
-		len2++;
-	result = malloc(sizeof(*result) * (len1 + len2 + 1));
-	if (!result)
+	if (!str || !len)
 		return (NULL);
-	ft_memcpy(result, s1, len1);
-	ft_memcpy(&result[len1], s2, len2);
-	result[len1 + len2] = 0;
+	i = 0;
+	result = malloc(sizeof(*result) * (len + 1));
+	while (i < len)
+	{
+		result[i] = str[i];
+		i++;
+	}
+	result[i] = '\0';
 	return (result);
 }
 
-/*char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin(char *str1, char *str2)
+{
+	int		i;
+	int		len;
+	char	*result;
+
+	len = ft_strlen(str1) + ft_strlen(str2);
+	result = malloc(sizeof(*result) * (len + 1));
+	if (!result)
+		return (NULL);
+	i = 0;
+	len = 0;
+	if (str1)
+		while (str1[i])
+			result[len++] = str1[i++];
+	i = 0;
+	if (str2)
+		while (str2[i])
+			result[len++] = str2[i++];
+	result[len] = 0;
+	free(str1);
+	return (result);
+}
+
+/*	char	*ft_strjoin(char *s1, char *s2)
 {
 	size_t	i;
 	int		len;
@@ -106,39 +105,4 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	str[len] = '\0';
 	free(s1);
 	return (str);
-}
-
-int	contain_n(char	*str)
-{
-	int		i;
-
-	if (!str)
-		return (0);
-	i = -1;
-	while (str[++i])
-		if (str[i] == 10)
-			return (1);
-	return (0);
 }*/
-
-char	*print_line(char **tempo)
-{
-	int		i;
-	char	*line;
-	char	*str;
-
-	if (!*tempo)
-		return (NULL);
-	str = *tempo;
-	i = 0;
-	while (str[i] && str[i] != 10)
-		i++;
-	if (str[i] == 10)
-		i++;
-	line = ft_strdup(str, i);
-	*tempo = ft_strdup(str + i, ft_strlen(str + i));
-	if (str)
-		free(str);
-	str = NULL;
-	return (line);
-}

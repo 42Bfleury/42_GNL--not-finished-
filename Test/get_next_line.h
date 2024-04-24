@@ -28,14 +28,12 @@
 
 //		get_next_line.c		//
 char	*get_next_line(int fd);
-int		contain_n(char *str, char n);
+char	*print_line(char **tempo);
 
 //		get_next_line_utils.c		//
 int		ft_strlen(char *str);
 char	*ft_strdup(char *s, int len);
-// char	*ft_strjoin(char *s1, char *s2);
-char	*ft_strjoin(const char *s1, const char *s2);
-// int		contain_n(char *str);
-char	*print_line(char **tempo);
+char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strchr(char *str, char c);
 
 #endif
