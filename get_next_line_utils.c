@@ -6,7 +6,7 @@
 /*   By: bfleury <bfleury@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 09:08:57 by bfleury           #+#    #+#             */
-/*   Updated: 2024/04/26 16:23:04 by bfleury          ###   ########.fr       */
+/*   Updated: 2024/04/26 22:36:34 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_strlen(char *str)
 char	*ft_strchr(char *str, char c)
 {
 	if (!str)
-		return (free(str), str = NULL, NULL);
+		return (NULL);
 	c %= 256;
 	while (*str)
 	{
@@ -40,13 +40,13 @@ char	*ft_strchr(char *str, char c)
 	return (NULL);
 }
 
-char	*ft_strdup(char *str, int len)
+char	*ft_gnl_strdup(char *str, int len)
 {
 	int		i;
 	char	*result;
 
 	if (!str || !len)
-		return (free(str), str = NULL, NULL);
+		return (NULL);
 	i = 0;
 	result = malloc(sizeof(*result) * (len + 1));
 	if (!result)
@@ -60,18 +60,16 @@ char	*ft_strdup(char *str, int len)
 	return (result);
 }
 
-char	*ft_strjoin(char *str1, char *str2)
+char	*ft_gnl_strjoin(char *str1, char *str2)
 {
 	int		i;
 	int		len;
 	char	*result;
 
-	if (!str1 && !str2)
-		return (free(str1), str1 = NULL, NULL);
 	len = ft_strlen(str1) + ft_strlen(str2);
 	result = malloc(sizeof(*result) * (len + 1));
-	if ((!str1 && !str2) || !len || !result)
-		return (free(str1), str1 = NULL, free(result), result = NULL, NULL);
+	if (!result)
+		return (free(str1), str1 = NULL, NULL);
 	i = 0;
 	len = 0;
 	if (str1)
@@ -84,28 +82,3 @@ char	*ft_strjoin(char *str1, char *str2)
 	result[len] = 0;
 	return (free(str1), str1 = NULL, result);
 }
-
-/*	char	*ft_strjoin(char *s1, char *s2)
-{
-	size_t	i;
-	int		len;
-	char	*str;
-
-	len = ft_strlen(s2);
-	if (!s1)
-		return (ft_strdup(s2, len));
-	len += ft_strlen(s1);
-	str = malloc(len + 1);
-	if (!str)
-		return (NULL);
-	i = 0;
-	len = 0;
-	while (s1[i])
-		str[len++] = s1[i++];
-	i = 0;
-	while (s2[i])
-		str[len++] = s2[i++];
-	str[len] = '\0';
-	free(s1);
-	return (str);
-}*/

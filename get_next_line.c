@@ -6,7 +6,7 @@
 /*   By: bfleury <bfleury@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 09:07:26 by bfleury           #+#    #+#             */
-/*   Updated: 2024/04/26 16:20:32 by bfleury          ###   ########.fr       */
+/*   Updated: 2024/04/26 22:31:51 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,20 @@ static char	*_get_line(char **data)
 	char	*tmp;
 	char	*line;
 
-	if (!*data)
-		return (NULL);
 	tmp = *data;
 	i = 0;
 	while (tmp[i] && tmp[i] != '\n')
 		i++;
 	if (tmp[i] == '\n')
 		i++;
-	line = ft_strdup(tmp, i);
+	line = ft_gnl_strdup(tmp, i);
 	if (!line)
 		return (free(*data), *data = NULL, NULL);
 	if (tmp[i])
 	{
-		*data = ft_strdup(tmp + i, ft_strlen(tmp + i));
+		*data = ft_gnl_strdup(tmp + i, ft_strlen(tmp + i));
 		if (!*data)
-			return (free(line), line = NULL, NULL);
+			return (free(line), line = NULL, free(tmp), tmp = NULL, NULL);
 	}
 	else
 		*data = NULL;
@@ -46,9 +44,11 @@ char	*get_next_line(int fd)
 	char			*buffer;
 	int				nb_read;
 
+	if (BUFFER_SIZE <= 0 || fd < 0 || read(fd, 0, 0) < 0)
+		return (free(data), data = NULL, NULL);
 	buffer = malloc(sizeof(*buffer) * (BUFFER_SIZE + 1));
-	if (!buffer || BUFFER_SIZE <= 0 || fd < 0 || read(fd, buffer, 0) < 0)
-		return (free(buffer), buffer = NULL, free(data), data = NULL, NULL);
+	if (!buffer)
+		return (free(data), data = NULL, NULL);
 	if (ft_strchr(data, '\n'))
 		return (free(buffer), buffer = NULL, _get_line(&data));
 	nb_read = 1;
@@ -56,7 +56,7 @@ char	*get_next_line(int fd)
 	{
 		nb_read = read(fd, buffer, BUFFER_SIZE);
 		buffer[nb_read] = 0;
-		data = ft_strjoin(data, buffer);
+		data = ft_gnl_strjoin(data, buffer);
 		if (!data)
 			return (free(buffer), buffer = NULL, NULL);
 		if (ft_strchr(buffer, '\n'))
@@ -64,22 +64,3 @@ char	*get_next_line(int fd)
 	}
 	return (free(buffer), buffer = NULL, _get_line(&data));
 }
-
-/*#include <fcntl.h>
-#include <stdio.h>
-
-int	main(void)
-{
-	int		fd;
-	char	*line;
-
-	fd = open("bible.txt", O_RDONLY);
-	line = "";
-	while (line)
-	{
-		line = get_next_line(fd);
-		free(line);
-	}
-	close(fd);
-	return (0);
-}*/
