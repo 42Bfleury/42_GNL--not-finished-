@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bfleury <bfleury@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 09:07:26 by bfleury           #+#    #+#             */
-/*   Updated: 2024/04/27 00:31:12 by bfleury          ###   ########.fr       */
+/*   Updated: 2024/04/27 02:40:48 by bfleury          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*_get_line(char **data)
 {
@@ -36,25 +36,25 @@ static char	*_get_line(char **data)
 
 char	*get_next_line(int fd)
 {
-	static char		*data;
+	static char		*data[1024];
 
 	if (BUFFER_SIZE <= 0 || fd < 0 || read(fd, 0, 0) < 0)
-		return (free(data), data = NULL, NULL);
+		return (free(data[fd]), data[fd] = NULL, NULL);
 	char *(buffer) = malloc(sizeof(*buffer) * (BUFFER_SIZE + 1));
 	if (!buffer)
-		return (free(data), data = NULL, NULL);
-	if (ft_strchr(data, '\n'))
-		return (free(buffer), buffer = NULL, _get_line(&data));
+		return (free(data[fd]), data[fd] = NULL, NULL);
+	if (ft_strchr(data[fd], '\n'))
+		return (free(buffer), buffer = NULL, _get_line(&data[fd]));
 	int (nb_read) = 1;
 	while (nb_read > 0)
 	{
 		nb_read = read(fd, buffer, BUFFER_SIZE);
 		buffer[nb_read] = 0;
-		data = ft_gnl_strjoin(data, buffer);
-		if (!data)
+		data[fd] = ft_gnl_strjoin(data[fd], buffer);
+		if (!data[fd])
 			return (free(buffer), buffer = NULL, NULL);
 		if (ft_strchr(buffer, '\n'))
 			break ;
 	}
-	return (free(buffer), buffer = NULL, _get_line(&data));
+	return (free(buffer), buffer = NULL, _get_line(&data[fd]));
 }
